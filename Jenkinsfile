@@ -16,31 +16,33 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies (Clean Install)...'
-                bat 'npm ci'
+                echo 'Installing dependencies (Robust Mode)...'
+                // Using "call" is critical for batch files on Windows Jenkins
+                bat "call npm install --no-audit"
                 echo 'Installing Playwright browsers...'
-                bat 'npx playwright install --with-deps chromium'
+                bat "call .\\node_modules\\.bin\\playwright install --with-deps chromium"
             }
         }
 
         stage('Unit Test') {
             steps {
                 echo 'Running Unit Tests (Vitest)...'
-                bat 'npx ng test --watch=false'
+                // Direct path to ng binary to avoid "not found" errors
+                bat "call .\\node_modules\\.bin\\ng test --watch=false"
             }
         }
 
         stage('Automation Test') {
             steps {
                 echo 'Running Automation Tests (Playwright)...'
-                bat 'npx playwright test'
+                bat "call .\\node_modules\\.bin\\playwright test"
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building Angular application for production...'
-                bat 'npx ng build'
+                bat "call .\\node_modules\\.bin\\ng build"
             }
         }
 
