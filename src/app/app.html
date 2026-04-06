@@ -1,0 +1,57 @@
+<main class="login-container">
+  @if (!isLoggedIn()) {
+    <div class="login-card">
+      <div class="header">
+        <h1>Welcome Back</h1>
+        <p>Please sign in to continue</p>
+      </div>
+
+      <form (ngSubmit)="signIn()" #loginForm="ngForm" class="login-form">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            [(ngModel)]="username"
+            placeholder="Enter username" 
+            required 
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            [(ngModel)]="password"
+            placeholder="••••••••" 
+            required 
+          />
+        </div>
+
+        @if (errorMessage()) {
+          <div class="error-msg" id="error-message">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <button type="submit" id="signin-btn" class="primary-btn">
+          Sign In
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h1>Hello, {{ username() }}!</h1>
+      <p id="success-msg">You have signed in successfully.</p>
+      <button (click)="signOut()" id="signout-btn" class="secondary-btn">
+        Sign Out
+      </button>
+    </div>
+  }
+</main>
+
+<router-outlet />
