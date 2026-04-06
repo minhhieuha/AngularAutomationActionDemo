@@ -16,8 +16,8 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies...'
-                bat 'npm install'
+                echo 'Installing dependencies (Clean Install)...'
+                bat 'npm ci'
                 echo 'Installing Playwright browsers...'
                 bat 'npx playwright install --with-deps chromium'
             }
@@ -26,7 +26,7 @@ pipeline {
         stage('Unit Test') {
             steps {
                 echo 'Running Unit Tests (Vitest)...'
-                bat 'npm test -- --watch=false'
+                bat 'npx ng test --watch=false'
             }
         }
 
@@ -40,7 +40,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Angular application for production...'
-                bat 'npm run build'
+                bat 'npx ng build'
             }
         }
 
