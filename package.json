@@ -10,7 +10,8 @@
     "test": "ng test",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
-    "test:e2e:headed": "npx playwright test --headed"
+    "test:e2e:headed": "npx playwright test --headed",
+    "serve:prod": "npx serve -s dist/angular-app/browser -p $PORT"
   },
   "prettier": {
     "printWidth": 100,

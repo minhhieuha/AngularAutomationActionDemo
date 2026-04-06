@@ -4,7 +4,6 @@ pipeline {
     environment {
         // ID of the credential in Jenkins containing your Render Deploy Hook URL
         RENDER_DEPLOY_HOOK = credentials('RENDER_DEPLOY_HOOK')
-        NODE_ENV = 'production'
     }
 
     stages {
