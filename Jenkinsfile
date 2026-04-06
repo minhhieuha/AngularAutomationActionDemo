@@ -16,33 +16,36 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies (Robust Mode)...'
-                // Using "call" is critical for batch files on Windows Jenkins
-                bat "call npm install --no-audit"
+                echo 'Cleaning workspace (Turbo Reset Mode)...'
+                // Force a clean state to avoid "762ms up to date" issues
+                bat 'if exist node_modules rd /s /q node_modules'
+                echo 'Installing dependencies...'
+                bat 'call npm install --no-audit'
                 echo 'Installing Playwright browsers...'
-                bat "call .\\node_modules\\.bin\\playwright install --with-deps chromium"
+                // Using absolute quoted path with .cmd extension
+                bat "call \"${WORKSPACE}\\node_modules\\.bin\\playwright.cmd\" install --with-deps chromium"
             }
         }
 
         stage('Unit Test') {
             steps {
                 echo 'Running Unit Tests (Vitest)...'
-                // Direct path to ng binary to avoid "not found" errors
-                bat "call .\\node_modules\\.bin\\ng test --watch=false"
+                // Direct absolute path to ng.cmd
+                bat "call \"${WORKSPACE}\\node_modules\\.bin\\ng.cmd\" test --watch=false"
             }
         }
 
         stage('Automation Test') {
             steps {
                 echo 'Running Automation Tests (Playwright)...'
-                bat "call .\\node_modules\\.bin\\playwright test"
+                bat "call \"${WORKSPACE}\\node_modules\\.bin\\playwright.cmd\" test"
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building Angular application for production...'
-                bat "call .\\node_modules\\.bin\\ng build"
+                bat "call \"${WORKSPACE}\\node_modules\\.bin\\ng.cmd\" build"
             }
         }
 
